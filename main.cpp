@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <regex>
 #include <cstdlib>
 #include <mutex>
 #include <tgbot/tgbot.h>
@@ -36,7 +35,6 @@ int main(){
     //R"reg([^\s]+\.[\w]{2,})reg";
 
     LinkBin<string> linkstore;
-    regex url_like;
 
     auto token=getenv("TELEGRAM_TOKEN");
     if(token == nullptr){
@@ -67,13 +65,13 @@ int main(){
     bot.getEvents().onNonCommandMessage((const EventBroadcaster::MessageListener &) [&](auto message) {
             cout << "User wrote: " << message->text << '\n';
 
-            smatch url_res;
-            regex_search(message->text, url_res, url_like);
-            cout << "is there an url?: " <<  !url_res.empty() << '\n';
-            if(url_res.empty()) return;
-            for(auto u: url_res){
-                cout << "url: " << u << '\n';
-                linkstore.save(u);
+            for(auto en: message->entities){
+                if(en->type == "url"s){
+                    auto url =message->text.substr(en->offset, en->length);
+                    linkstore.save(url);
+                    cout << "url: " << url << '\n';
+                }
+
             }
 
         });
