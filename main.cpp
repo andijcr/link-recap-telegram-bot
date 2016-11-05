@@ -64,7 +64,7 @@ int main(){
 
     bot.getEvents().onNonCommandMessage((const EventBroadcaster::MessageListener &) [&](auto message) {
             cout << "User wrote: " << message->text << '\n';
-
+            auto& text=message->text;
             for(auto en: message->entities){
                 if(en->type == "url"s){
                     auto url =message->text.substr(en->offset, en->length);
