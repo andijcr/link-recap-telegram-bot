@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <mutex>
+#include <clocale>
 #include <tgbot/tgbot.h>
 
 
@@ -30,6 +31,7 @@ public:
 
 
 int main(){
+    setlocale(LC_ALL, "en_US.UTF-8");
 
     //this catch some symbols with a point in the middle, basically
     //R"reg([^\s]+\.[\w]{2,})reg";
